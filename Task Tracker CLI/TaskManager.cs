@@ -88,26 +88,7 @@ namespace Task_Tracker_CLI
             Save();
             Console.WriteLine($"Task {id} marked as {status}.");
         }
-
-        //public void List(string? status = null)
-        //{
-        //    var list = string.IsNullOrEmpty(status)
-        //        ? tasks
-        //        : tasks.Where(t => t.Status.Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
-
-        //    if (!list.Any())
-        //    {
-        //        Console.WriteLine("No tasks found.");
-        //        return;
-        //    }
-
-        //    foreach (var task in list)
-        //    {
-        //        Console.WriteLine($"[{task.Id}] ({task.Status}) {task.Description}");
-        //    }
-        //}
-
-
+         
 
         public void List(string? status = null)
         {
@@ -145,68 +126,68 @@ namespace Task_Tracker_CLI
             }
         }
 
-        //public void List(string? status = null)
-        //{
-        //    var list = string.IsNullOrEmpty(status)
-        //        ? tasks
-        //        : tasks.Where(t => t.Status.Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
+        public void ListTable(string? status = null)
+        {
+            var list = string.IsNullOrEmpty(status)
+                ? tasks
+                : tasks.Where(t => t.Status.Equals(status, StringComparison.OrdinalIgnoreCase)).ToList();
 
-        //    if (!list.Any())
-        //    {
-        //        Console.WriteLine("No tasks found.");
-        //        return;
-        //    }
+            if (!list.Any())
+            {
+                Console.WriteLine("No tasks found.");
+                return;
+            }
 
-        //    // Determine max widths
-        //    int idWidth = Math.Max(2, list.Max(t => t.Id.ToString().Length));
-        //    int statusWidth = Math.Max(6, list.Max(t => t.Status.Length));
-        //    int descWidth = Math.Max(11, list.Max(t => t.Description.Length));
-        //    int dateWidth = 17; // Fixed width for datetime
+            // Determine max widths
+            int idWidth = Math.Max(2, list.Max(t => t.Id.ToString().Length));
+            int statusWidth = Math.Max(6, list.Max(t => t.Status.Length));
+            int descWidth = Math.Max(11, list.Max(t => t.Description.Length));
+            int dateWidth = 17; // Fixed width for datetime
 
-        //    // Header
-        //    Console.ForegroundColor = ConsoleColor.White;
-        //    Console.WriteLine(
-        //        $"{Pad("ID", idWidth)}  {Pad("Status", statusWidth)}  {Pad("Description", descWidth)}  {Pad("Created At", dateWidth)}  {Pad("Updated At", dateWidth)}"
-        //    );
-        //    Console.WriteLine(
-        //        $"{new string('-', idWidth)}  {new string('-', statusWidth)}  {new string('-', descWidth)}  {new string('-', dateWidth)}  {new string('-', dateWidth)}"
-        //    );
-        //    Console.ResetColor();
+            // Header
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(
+                $"{Pad("ID", idWidth)}  {Pad("Status", statusWidth)}  {Pad("Description", descWidth)}  {Pad("Created At", dateWidth)}  {Pad("Updated At", dateWidth)}"
+            );
+            Console.WriteLine(
+                $"{new string('-', idWidth)}  {new string('-', statusWidth)}  {new string('-', descWidth)}  {new string('-', dateWidth)}  {new string('-', dateWidth)}"
+            );
+            Console.ResetColor();
 
-        //    foreach (var task in list)
-        //    {
-        //        SetStatusColor(task.Status);
+            foreach (var task in list)
+            {
+                SetStatusColor(task.Status);
 
-        //        Console.WriteLine(
-        //            $"{Pad(task.Id.ToString(), idWidth)}  {Pad(task.Status, statusWidth)}  {Pad(task.Description, descWidth)}  {Pad(task.CreatedAt.ToString("dd-MMM-yyyy HH:mm"), dateWidth)}  {Pad(task.UpdatedAt.ToString("dd-MMM-yyyy HH:mm"), dateWidth)}"
-        //        );
+                Console.WriteLine(
+                    $"{Pad(task.Id.ToString(), idWidth)}  {Pad(task.Status, statusWidth)}  {Pad(task.Description, descWidth)}  {Pad(task.CreatedAt.ToString("dd-MMM-yyyy HH:mm"), dateWidth)}  {Pad(task.UpdatedAt.ToString("dd-MMM-yyyy HH:mm"), dateWidth)}"
+                );
 
-        //        Console.ResetColor();
-        //    }
+                Console.ResetColor();
+            }
 
-        //    // Helpers
-        //    static string Pad(string text, int width) =>
-        //        text.Length > width ? text[..width] : text.PadRight(width);
+            // Helpers
+            static string Pad(string text, int width) =>
+                text.Length > width ? text[..width] : text.PadRight(width);
 
-        //    static void SetStatusColor(string status)
-        //    {
-        //        switch (status)
-        //        {
-        //            case "todo":
-        //                Console.ForegroundColor = ConsoleColor.Yellow;
-        //                break;
-        //            case "in-progress":
-        //                Console.ForegroundColor = ConsoleColor.Cyan;
-        //                break;
-        //            case "done":
-        //                Console.ForegroundColor = ConsoleColor.Green;
-        //                break;
-        //            default:
-        //                Console.ResetColor();
-        //                break;
-        //        }
-        //    }
-        //}
+            static void SetStatusColor(string status)
+            {
+                switch (status)
+                {
+                    case "todo":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+                    case "in-progress":
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        break;
+                    case "done":
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    default:
+                        Console.ResetColor();
+                        break;
+                }
+            }
+        }
 
         public static void ShowHelp()
         {
@@ -252,6 +233,15 @@ namespace Task_Tracker_CLI
             Console.WriteLine("      List tasks by status (todo | in-progress | done).");
             Console.WriteLine();
 
+            Console.WriteLine("  list-table");
+            Console.WriteLine("      Show tasks in table format with color and timestamps.");
+            Console.WriteLine();
+
+            Console.WriteLine("  list-table <status>");
+            Console.WriteLine("      Show tasks filtered by status in table format.");
+            Console.WriteLine();
+
+
             Console.WriteLine("  list-json");
             Console.WriteLine("      Output all tasks in JSON format.");
             Console.WriteLine();
@@ -263,6 +253,11 @@ namespace Task_Tracker_CLI
             Console.WriteLine("  exit");
             Console.WriteLine("      Exit the application.");
             Console.WriteLine();
+
+            Console.WriteLine("  clear");
+            Console.WriteLine("      Clears the console screen.");
+            Console.WriteLine();
+
         }
 
 

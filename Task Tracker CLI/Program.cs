@@ -1,12 +1,19 @@
 ﻿using Task_Tracker_CLI;
 
 var manager = new TaskManager();
+bool IsCountinue = false;
 
 while (true)
 {
-    Console.Write("task-cli ");
+    Console.Write($"{(IsCountinue ? "" : "\n")}task-cli ");
     var input = Console.ReadLine();
-    if (string.IsNullOrWhiteSpace(input)) continue;
+    if (string.IsNullOrWhiteSpace(input))
+    {
+        IsCountinue = true;
+        continue;
+    }
+
+    IsCountinue = false;
 
     var tokens = input.Split(" ", 2);
     var command = tokens[0].ToLower();
@@ -14,6 +21,10 @@ while (true)
 
     switch (command)
     {
+        case "clear":
+            Console.Clear();
+            break;
+
         case "help":
             TaskManager.ShowHelp();
             break;
@@ -55,6 +66,10 @@ while (true)
 
         case "list":
             manager.List(string.IsNullOrWhiteSpace(rest) ? null : rest);
+            break;
+
+        case "list-table":
+            manager.ListTable(string.IsNullOrWhiteSpace(rest) ? null : rest);
             break;
 
         case "list-json":
